@@ -16,28 +16,35 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend
-          image: backend:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 5000
-          env:
-            - name: DB_HOST
-              value: postgres
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
-              value: appdb
-            - name: DB_USER
-              value: appuser
-            - name: DB_PASSWORD
-              value: apppass
-            - name: DATABASE_URL
-              value: postgresql://appuser:apppass@postgres:5432/appdb
-            - name: AWS_DEFAULT_REGION
-              value: us-east-1
-            - name: AWS_REGION
-              value: us-east-1
+      - name: backend
+        image: zicmabr/guess-game-backend:v1.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_HOST
+          value: postgres
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: appdb
+        - name: DB_USER
+          value: appuser
+        - name: DB_PASSWORD
+          value: apppass
+        - name: DATABASE_URL
+          value: postgresql://appuser:apppass@postgres:5432/appdb
+        - name: AWS_DEFAULT_REGION
+          value: us-east-1
+        - name: AWS_REGION
+          value: us-east-1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
 ---
 apiVersion: v1
 kind: Service
@@ -51,5 +58,5 @@ spec:
   selector:
     app: backend
   ports:
-    - port: 5000
-      targetPort: 5000
+  - port: 5000
+    targetPort: 5000
